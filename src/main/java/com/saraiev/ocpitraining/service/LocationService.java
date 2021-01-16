@@ -1,7 +1,9 @@
 package com.saraiev.ocpitraining.service;
 
+import com.saraiev.ocpitraining.config.kafka.KafkaTopicConfig;
 import com.saraiev.ocpitraining.model.Location;
 import com.saraiev.ocpitraining.repository.LocationRepository;
+import com.saraiev.ocpitraining.service.kafka.KafkaMessagePublisher;
 import lombok.RequiredArgsConstructor;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +14,8 @@ import java.util.Optional;
 public class LocationService implements OcpiService<String, Location>{
 
     private final LocationRepository locationRepository;
+    private final KafkaMessagePublisher kafkaMessagePublisher;
+    private final KafkaTopicConfig kafkaTopicConfig;
 
     @Override
     public Location get(String id) {
@@ -21,7 +25,9 @@ public class LocationService implements OcpiService<String, Location>{
 
     @Override
     public Location create(Location entity) {
-        return locationRepository.save(entity);
+        kafkaMessagePublisher.sendMessage(kafkaTopicConfig.getOcpiTopicName(), entity.toString());
+        return entity;
+//        return locationRepository.save(entity);
     }
 
     @Override
