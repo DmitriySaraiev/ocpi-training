@@ -1,40 +1,38 @@
 package com.saraiev.ocpitraining.api.controller;
 
-import com.saraiev.ocpitraining.api.BaseApiResponse;
-import com.saraiev.ocpitraining.api.CommonResponses;
-import com.saraiev.ocpitraining.api.DataApiResponse;
 import com.saraiev.ocpitraining.model.Connector;
-import com.saraiev.ocpitraining.service.ConnectorService;
+import com.saraiev.ocpitraining.service.OcpiService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/connector")
+@RequiredArgsConstructor
 public class ConnectorController {
-    
-    private final ConnectorService connectorService;
 
-    public ConnectorController(ConnectorService connectorService) {
-        this.connectorService = connectorService;
-    }
+    private final OcpiService<String, Connector> ocpiService;
 
     @GetMapping
-    public DataApiResponse<Connector> get() {
-        return new DataApiResponse<>(new Connector());
+    public ResponseEntity<Connector> get(@RequestParam String id) {
+        return new ResponseEntity<>(ocpiService.get(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public DataApiResponse<Connector> create() {
-        return new DataApiResponse<>(new Connector());
+    public ResponseEntity<Connector> create(Connector connector) {
+        return new ResponseEntity<>(ocpiService.create(connector), HttpStatus.OK);
     }
 
     @PutMapping
-    public DataApiResponse<Connector> update() {
-        return new DataApiResponse<>(new Connector());
+    public ResponseEntity<Connector> update(Connector connector) {
+        return new ResponseEntity<>(ocpiService.update(connector), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public BaseApiResponse delete() {
-        return CommonResponses.successResponse();
+    public ResponseEntity<String> delete(Connector connector) {
+        ocpiService.delete(connector);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
-    
+
 }

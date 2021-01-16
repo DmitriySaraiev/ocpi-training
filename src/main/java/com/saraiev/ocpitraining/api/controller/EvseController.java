@@ -1,39 +1,37 @@
 package com.saraiev.ocpitraining.api.controller;
 
-import com.saraiev.ocpitraining.api.BaseApiResponse;
-import com.saraiev.ocpitraining.api.CommonResponses;
-import com.saraiev.ocpitraining.api.DataApiResponse;
 import com.saraiev.ocpitraining.model.Evse;
-import com.saraiev.ocpitraining.service.EvseService;
+import com.saraiev.ocpitraining.service.OcpiService;
+import lombok.RequiredArgsConstructor;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/evse")
+@RequiredArgsConstructor
 public class EvseController {
-    
-    private final EvseService evseService;
 
-    public EvseController(EvseService evseService) {
-        this.evseService = evseService;
-    }
+    private final OcpiService<String, Evse> ocpiService;
 
     @GetMapping
-    public DataApiResponse<Evse> get() {
-        return new DataApiResponse<>(new Evse());
+    public ResponseEntity<Evse> get(@RequestParam String id) {
+        return new ResponseEntity<>(ocpiService.get(id), HttpStatus.OK);
     }
 
     @PostMapping
-    public DataApiResponse<Evse> create() {
-        return new DataApiResponse<>(new Evse());
+    public ResponseEntity<Evse> create(Evse evse) {
+        return new ResponseEntity<>(ocpiService.create(evse), HttpStatus.OK);
     }
 
     @PutMapping
-    public DataApiResponse<Evse> update() {
-        return new DataApiResponse<>(new Evse());
+    public ResponseEntity<Evse> update(Evse evse) {
+        return new ResponseEntity<>(ocpiService.update(evse), HttpStatus.OK);
     }
 
     @DeleteMapping
-    public BaseApiResponse delete() {
-        return CommonResponses.successResponse();
+    public ResponseEntity<String> delete(Evse evse) {
+        ocpiService.delete(evse);
+        return new ResponseEntity<>(HttpStatus.OK);
     }
 }
