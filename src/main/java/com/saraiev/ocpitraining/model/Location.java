@@ -3,13 +3,15 @@ package com.saraiev.ocpitraining.model;
 import com.fasterxml.jackson.annotation.JsonProperty;
 import com.saraiev.ocpitraining.model.enums.Facility;
 import com.saraiev.ocpitraining.model.enums.LocationType;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.Set;
 
 @Data
-public class Location {
+@Builder
+public class Location implements OcpiEntity<String>{
 
     @JsonProperty("country_code")
     private String countryCode;
@@ -79,5 +81,10 @@ public class Location {
 
     @JsonProperty("last_updated")
     private Date lastUpdated;
+
+    @Override
+    public String getId() {
+        return id;
+    }
 
 }

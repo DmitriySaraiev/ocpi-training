@@ -4,13 +4,15 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 import com.saraiev.ocpitraining.model.enums.ConnectorFormat;
 import com.saraiev.ocpitraining.model.enums.ConnectorType;
 import com.saraiev.ocpitraining.model.enums.PowerType;
+import lombok.Builder;
 import lombok.Data;
 
 import java.util.Date;
 import java.util.Set;
 
 @Data
-public class Connector {
+@Builder
+public class Connector implements OcpiEntity<String>{
 
     @JsonProperty("id")
     private String id;
@@ -41,5 +43,10 @@ public class Connector {
 
     @JsonProperty("last_updated")
     private Date lastUpdated;
+
+    @Override
+    public String getId() {
+        return id;
+    }
 
 }

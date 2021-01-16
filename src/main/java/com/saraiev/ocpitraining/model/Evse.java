@@ -9,13 +9,13 @@ import java.util.Date;
 import java.util.Set;
 
 @Data
-public class Evse {
+public class Evse implements OcpiEntity<String>{
 
     @JsonProperty("uid")
     private String uid;
 
     @JsonProperty("evse_id")
-    private String evse_id;
+    private String evseId;
 
     @JsonProperty("status")
     private Status status;
@@ -49,4 +49,10 @@ public class Evse {
 
     @JsonProperty("last_updated")
     private Date lastUpdated;
+
+    @Override
+    public String getId() {
+        return evseId;
+    }
+
 }
